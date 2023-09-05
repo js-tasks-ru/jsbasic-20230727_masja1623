@@ -1,48 +1,38 @@
 function initCarousel() {
-  let currentSlideNumber = 0;
-  let slidesAmount = 4;
-  let elem = document.querySelector('[data-carousel-holder]');
+  let rightClickArrow = document.querySelector('.carousel__arrow.carousel__arrow_right');
+  let leftClickArrow = document.querySelector('.carousel__arrow.carousel__arrow_left');
+  let carouselInner = document.querySelector('.carousel__inner');
+  let carouselSlideWidth = document.querySelector('.carousel__slide');
+  let currentPosition = 0;
+  let numberOfSlides = 4;
 
-  let carouselInnerElem = elem.querySelector('.carousel__inner');
-  let carouselArrowRight = elem.querySelector('.carousel__arrow_right');
-  let carouselArrowLeft = elem.querySelector('.carousel__arrow_left');
-
-  update();
-
-  elem.onclick = ({target}) => {
-    if (target.closest('.carousel__arrow_right')) {
-      next();
-    }
-
-    if (target.closest('.carousel__arrow_left')) {
-      prev();
-    }
-  };
-
-  function next() {
-    currentSlideNumber++;
-    update();
-  }
-
-  function prev() {
-    currentSlideNumber--;
-    update();
-  }
-
-  function update() {
-    let offset = -carouselInnerElem.offsetWidth * currentSlideNumber;
-    carouselInnerElem.style.transform = `translateX(${offset}px)`;
-
-    if (currentSlideNumber == slidesAmount - 1) {
-      carouselArrowRight.style.display = 'none';
+  function checkNavigationButtonsVisibility() {
+    if (currentPosition === 0) {
+      leftClickArrow.style.display = 'none';
     } else {
-      carouselArrowRight.style.display = '';
+      leftClickArrow.style.display = '';
     }
 
-    if (currentSlideNumber == 0) {
-      carouselArrowLeft.style.display = 'none';
+    if (currentPosition === -carouselSlideWidth.offsetWidth * (numberOfSlides - 1)) {
+      rightClickArrow.style.display = 'none';
     } else {
-      carouselArrowLeft.style.display = '';
+      rightClickArrow.style.display = '';
     }
   }
+
+  checkNavigationButtonsVisibility();
+
+  rightClickArrow.addEventListener('click', function () {
+    currentPosition -= carouselSlideWidth.offsetWidth;
+    checkNavigationButtonsVisibility();
+
+    carouselInner.style.transform = `translateX(${currentPosition}px)`;
+  });
+
+  leftClickArrow.addEventListener('click', function () {
+    currentPosition += carouselSlideWidth.offsetWidth;
+    checkNavigationButtonsVisibility();
+
+    carouselInner.style.transform = `translateX(${currentPosition}px)`;
+  });
 }
