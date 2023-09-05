@@ -19,6 +19,7 @@ function initCarousel() {
       rightClickArrow.style.display = '';
     }
   }
+
   checkNavigationButtonsVisibility();
 
   rightClickArrow.addEventListener('click', function () {
